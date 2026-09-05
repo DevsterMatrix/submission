@@ -8,6 +8,7 @@ const ignoredFields = [
   "version",
   "effective_time",
   "set_id",
+  "spl_product_data_elements",
 ];
 
 function Medicine() {
@@ -25,6 +26,15 @@ function Medicine() {
       </div>
     );
   }
+
+  const genericName =
+    medicine.openfda?.generic_name?.[0];
+
+  const applicationNumber =
+    medicine.openfda?.application_number?.[0];
+
+  const manufacturerName =
+    medicine.openfda?.manufacturer_name?.[0];
 
   function getCardClass(key: string) {
     if (key === "warnings") {
@@ -89,17 +99,37 @@ function Medicine() {
   }
 
   return (
-    <div className="min-h-screen p-10 bg-gray-100">
+    <div className="min-h-screen bg-gray-100 p-10">
       <Link to="/" className="text-blue-500">
         ← Back to search
       </Link>
 
-      <div className="max-w-4xl mx-auto mt-8">
-        <h1 className="text-3xl font-bold mb-8">
-          {medicine.openfda?.brand_name?.[0] || "Unknown medicine"}
+      <div className="mx-auto mt-8 max-w-4xl bg-white p-8 rounded-lg shadow-md">
+        <div className="mx-auto mt-8 max-w-4xl">
+        <h1 className="text-3xl font-bold">
+          {medicine.openfda?.brand_name?.[0] ||
+            "Unknown medicine"}
         </h1>
+        <h2 className="mt-2 text-lg text-gray-600">
+          {manufacturerName || "Unknown manufacturer"}
+        </h2>
 
-        <div className="grid gap-5">
+        <div className="mt-5 flex flex-wrap gap-2">
+          {genericName && (
+            <span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600">
+              Generic: {genericName}
+            </span>
+          )}
+
+          {applicationNumber && (
+            <span className="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700">
+              Application: {applicationNumber}
+            </span>
+          )}
+        </div>
+      </div> 
+
+        <div className="mt-8 grid gap-5">
           {Object.entries(medicine).map(([key, value]) => {
             if (ignoredFields.includes(key)) {
               return null;
@@ -116,9 +146,9 @@ function Medicine() {
             return (
               <div
                 key={key}
-                className={`border rounded-lg p-5 ${getCardClass(key)}`}
+                className={`rounded-lg border p-5 ${getCardClass(key)}`}
               >
-                <h2 className="text-xl font-semibold mb-3 capitalize">
+                <h2 className="mb-3 text-xl font-semibold capitalize">
                   {key.replaceAll("_", " ")}
                 </h2>
 
