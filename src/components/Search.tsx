@@ -103,6 +103,12 @@ function Search() {
 
   return (
     <div className="min-h-screen pt-32 flex flex-col items-center">
+      <h1 className="text-4xl font-bold mb-6">
+        Medicine Search
+      </h1>
+      <p className="text-lg text-gray-600 mb-8">
+        Search for medicines and view their details.
+      </p>
       <input
         type="text"
         placeholder="Search for a medicine..."
